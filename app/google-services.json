@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "254876112453-oi4nokn0n46qbis91o4dqlrpklejl67l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sandy.firebasechat",
+            "certificate_hash": "9ec8ba33c23e648fe03058caba74955f2b8a07d2"
+          }
+        },
+        {
           "client_id": "254876112453-eqeo5m8agf5mnh479sbgfr97qddhlnhq.apps.googleusercontent.com",
           "client_type": 3
         }

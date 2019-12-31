@@ -6,6 +6,7 @@
     <string name="str_username">User Name</string>
     <string name="str_password">Password</string>
     <string name="str_sign_in">Sign in</string>
+    <string name="str_register">Register</string>
 
     <string name="e_g_firebase_admin_admin_com">e.g. firebase_admin@admin.com</string>
     <string name="username">Username:</string>
