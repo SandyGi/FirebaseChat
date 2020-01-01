@@ -29,4 +29,6 @@
     <string name="choose_an_awesome_user_by_which_we_will_recognize_you">Choose an awesome username by which we will recognize you!</string>
     <string name="choose_your_account_details_and_make_sure_to_write_them_down">Choose your account details, and make sure to write them down!</string>
     <string name="username_taken">Username already taken!</string>
+    <string name="str_send">Send</string>
+    <string name="str_already_registered">Already registered</string>
 </resources>

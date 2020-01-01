@@ -13,14 +13,17 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.sandy.firebasechat.R
+import com.sandy.firebasechat.model.User
 import kotlinx.android.synthetic.main.activity_registration.*
 import java.util.*
 
 
 class RegistrationActivity : AppCompatActivity() {
 
-    private val mAuth: FirebaseAuth? = null
     private val TAG = RegistrationActivity::class.java.name
+
+    var selectedPhotoUri: Uri? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration)
@@ -30,13 +33,28 @@ class RegistrationActivity : AppCompatActivity() {
         registrationButton.setOnClickListener {
             performRegister()
         }
+        /**
+         * Choose profile image
+         */
         imgUser.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
             startActivityForResult(intent, 0)
         }
+
+        /**
+         * go to login screen if user already registered
+         */
+        btnAlreadyRegistered.setOnClickListener {
+            val intent = Intent(this@RegistrationActivity, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
+    /**
+     * do new user registration
+     */
     private fun performRegister() {
         var email = itetRUserName.text.toString()
         var password = itetRPassword.text.toString()
@@ -45,7 +63,6 @@ class RegistrationActivity : AppCompatActivity() {
             password
         )
             .addOnCompleteListener {
-
 
                 Log.e(TAG, "Email is $email}")
                 Log.e(TAG, "Password is $password")
@@ -68,6 +85,9 @@ class RegistrationActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * upload profile image on firebase database
+     */
     private fun uploadProfileImage() {
         if (selectedPhotoUri == null) return
         val fileName = UUID.randomUUID().toString()
@@ -84,14 +104,17 @@ class RegistrationActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * Save new user details
+     */
     private fun saveCreatedUser(profileImageUrl: String) {
-        val uuid = FirebaseAuth.getInstance().uid?:""
+        val uuid = FirebaseAuth.getInstance().uid ?: ""
         val path = FirebaseDatabase.getInstance().getReference("/users/$uuid")
-        val user = User(uuid, itetRUserName.text.toString(), profileImageUrl)
+        val user = User(uuid, itetRFullName.text.toString(), itetRUserName.text.toString(), profileImageUrl)
         path.setValue(user)
             .addOnSuccessListener {
                 Log.e(TAG, "Save user details")
-                val intent = Intent(this@RegistrationActivity, MessageActivity::class.java)
+                val intent = Intent(this@RegistrationActivity, LatestMessageActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
             }
@@ -99,8 +122,6 @@ class RegistrationActivity : AppCompatActivity() {
                 Log.e(TAG, "User details not saved ${it.message}")
             }
     }
-
-    var selectedPhotoUri: Uri? = null
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -112,6 +133,4 @@ class RegistrationActivity : AppCompatActivity() {
             imgUser.setImageDrawable(bitmapDrawable)
         }
     }
-
-    class User(val uid: String, val username: String, val profileImageUrl : String)
 }
